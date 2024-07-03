@@ -10,6 +10,18 @@ public:
 
     Vec3(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
 
+    float lengthSquared() const {
+        return x * x + y * y + z * z;
+    }
+
+    float length() const {
+        return sqrt(lengthSquared());
+    }
+
+    float magnitude() const {
+        return length();  // Alias for length()
+    }
+
     Vec3 operator+(const Vec3& other) const {
         return Vec3(x + other.x, y + other.y, z + other.z);
     }
@@ -105,4 +117,4 @@ public:
     }
 };
 
-#endif
+#endif // LINEAR_ALGEBRA_H

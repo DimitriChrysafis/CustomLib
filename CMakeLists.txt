@@ -14,6 +14,14 @@ add_executable(Car
         linear_algebra.h
         cube.hpp
         cube.cpp
+        camera.hpp
+        colors.hpp
+        render.hpp
+        camera.cpp
+        render.cpp
+        shapes.hpp
+        utils.hpp
+        utils.cpp
 )
 
 target_link_libraries(Car
