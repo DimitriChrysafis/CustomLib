@@ -3,7 +3,7 @@ using namespace std;
 using namespace sf;
 
 /**
- * @brief deefault constructor for the Camera class.
+ * @brief default constructor for the Camera class.
  *
  * starts the camera with a default rotation matrix, zoom level, zoom speed, dragging state, and the last mouse position.
  */

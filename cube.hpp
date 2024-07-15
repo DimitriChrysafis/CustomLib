@@ -39,4 +39,4 @@ void transformVertices(const Mat3& mat, vector<Vec3>& vertices);
 
 void drawCube(sf::RenderWindow& window, const Cube& cube, sf::Color color, const vector<Vec3>& transformedVertices = {});
 
-#endif // CUBE_HPP
+#endif

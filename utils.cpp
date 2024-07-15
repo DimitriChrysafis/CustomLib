@@ -8,7 +8,7 @@ vector<Cube> drawLineOfCubes(const Vec3& start, const Vec3& end, float cubeSize)
     float length = direction.length();
     int numCubes = static_cast<int>(length / cubeSize);
 
-    // Unit direction vector (do not ask me what this is)
+    // Unit direction vector (do not ask me what this is look it up)
     Vec3 unitDir = direction.normalize();
 
     for (int i = 0; i < numCubes; ++i) {

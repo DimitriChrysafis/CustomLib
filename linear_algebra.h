@@ -7,7 +7,7 @@ using namespace std;
 
 /*
  *
- * This is all just linear algebra operations theres nothing cool here
+ * This is all just linear algebra operations there's nothing cool here
  * read the title of each function for a summary 
  */
 class Vec3 {

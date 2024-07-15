@@ -8,7 +8,7 @@
 
 using namespace std; 
 /*
- * IMPORTANT READ ME
+ * IMPORTANT READ MEEEEE
  *you can make any shape you want here (see readMe for demo) its super sick and it can be used to make solar systems ect
  */
 

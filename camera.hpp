@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "linear_algebra.h"
 
+// :(
 class Camera {
 public:
     Camera();

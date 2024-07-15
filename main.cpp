@@ -20,7 +20,7 @@ int main() {
     vector<Cube> cubes;
     vector<Color> colors;
 
-    // SAMPLE: Pyramid with Lines
+    // SAMPLE: pyramid with Lines
     float baseSize = 200.0f;
     float height = 300.0f;
     float cubeSize = 10.0f;

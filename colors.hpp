@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 
+// ALL COLORS
+
 using namespace std;
 using namespace sf;
 

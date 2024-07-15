@@ -28,7 +28,7 @@ Cube createCube(float size, const Vec3& position) {
 /**
  * @brief transform the vertices of a cube using the given transformation matrix
 
- * @param mat the transformation matrix
+ * @param mat the transformation matrix.
  * @param vertices list of vertices to be transformed
  */
 void transformVertices(const Mat3& mat, vector<Vec3>& vertices) {

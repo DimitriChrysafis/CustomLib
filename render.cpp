@@ -5,7 +5,7 @@ using namespace std;
 void renderCubes(sf::RenderWindow& window, const vector<Cube>& cubes, const vector<sf::Color>& colors, const Camera& camera) {
     vector<Cube> transformedCubes;
 
-    // TRANSOFMR THE CUBES GIVEN THE CAMERA VIEW
+    // TRANSFORM THE CUBES GIVEN THE CAMERA VIEW
     for (const auto& cube : cubes) {
         Cube transformedCube = cube;
         transformVertices(camera.getViewMatrix(), transformedCube.vertices);
