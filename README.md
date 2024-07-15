@@ -10,6 +10,7 @@ Features
 - more coming after classes
 - YOU CAN MAKE ANY SHAPE
 
-
+FULL RES PLAYLIST: https://www.youtube.com/watch?v=3kiH6cPQzdI&list=PLeqIhFYYsFoHwFrjMMqwV3ILY0U0Kdyya
 ![Collage](collage.gif)
+
 
