@@ -1,5 +1,9 @@
 #include "cube.hpp"
+using namespace std;
 
+
+// THIS is the cube stuff that will be making ALL the cubes you see.
+// with custom size and 6 edges to make a cube(you can add more to make it look cooler)
 Cube createCube(float size, const Vec3& position) {
     Cube cube;
 
@@ -21,15 +25,21 @@ Cube createCube(float size, const Vec3& position) {
     return cube;
 }
 
-void transformVertices(const Mat3& mat, std::vector<Vec3>& vertices) {
+/**
+ * @brief transform the vertices of a cube using the given transformation matrix
+
+ * @param mat the transformation matrix
+ * @param vertices list of vertices to be transformed
+ */
+void transformVertices(const Mat3& mat, vector<Vec3>& vertices) {
     for (auto& v : vertices) {
         v = mat * v;
     }
 }
 
-void drawCube(sf::RenderWindow& window, const Cube& cube, sf::Color color, const std::vector<Vec3>& transformedVertices) {
+void drawCube(sf::RenderWindow& window, const Cube& cube, sf::Color color, const vector<Vec3>& transformedVertices) {
     sf::VertexArray lines(sf::Lines, cube.edges.size() * 2);
-    const std::vector<Vec3>& vertices = (transformedVertices.empty() ? cube.vertices : transformedVertices);
+    const vector<Vec3>& vertices = (transformedVertices.empty() ? cube.vertices : transformedVertices);
 
     for (size_t i = 0; i < cube.edges.size(); ++i) {
         Vec3 v1 = vertices[cube.edges[i].first];

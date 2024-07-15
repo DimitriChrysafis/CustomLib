@@ -3,7 +3,13 @@
 
 #include <cmath>
 #include <array>
+using namespace std;
 
+/*
+ *
+ * This is all just linear algebra operations theres nothing cool here
+ * read the title of each function for a summary 
+ */
 class Vec3 {
 public:
     float x, y, z;
@@ -61,14 +67,14 @@ public:
     }
 
     Vec3 normalize() const {
-        float mag = std::sqrt(x * x + y * y + z * z);
+        float mag = sqrt(x * x + y * y + z * z);
         return Vec3(x / mag, y / mag, z / mag);
     }
 };
 
 class Mat3 {
 public:
-    std::array<std::array<float, 3>, 3> mat;
+    array<array<float, 3>, 3> mat;
 
     Mat3() {
         for (int i = 0; i < 3; ++i)
@@ -96,8 +102,8 @@ public:
     }
 
     static Mat3 rotationMatrix(float angle, const Vec3& axis) {
-        float cosA = std::cos(angle);
-        float sinA = std::sin(angle);
+        float cosA = cos(angle);
+        float sinA = sin(angle);
         Vec3 u = axis.normalize();
 
         Mat3 result;

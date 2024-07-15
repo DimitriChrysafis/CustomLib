@@ -1,16 +1,18 @@
 #include "render.hpp"
 
-void renderCubes(sf::RenderWindow& window, const std::vector<Cube>& cubes, const std::vector<sf::Color>& colors, const Camera& camera) {
-    std::vector<Cube> transformedCubes;
+using namespace std;
 
-    // Transform cubes according to camera view
+void renderCubes(sf::RenderWindow& window, const vector<Cube>& cubes, const vector<sf::Color>& colors, const Camera& camera) {
+    vector<Cube> transformedCubes;
+
+    // TRANSOFMR THE CUBES GIVEN THE CAMERA VIEW
     for (const auto& cube : cubes) {
         Cube transformedCube = cube;
         transformVertices(camera.getViewMatrix(), transformedCube.vertices);
         transformedCubes.push_back(transformedCube);
     }
 
-    // Render transformed cubes
+    // iterate and render each cube
     for (size_t i = 0; i < transformedCubes.size(); ++i) {
         drawCube(window, transformedCubes[i], colors[i]);
     }

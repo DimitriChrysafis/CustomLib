@@ -4,130 +4,133 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 
+using namespace std;
+using namespace sf;
+
 // Function to generate a random shade of yellow
-sf::Color getRandomShadeOfYellow() {
+Color getRandomShadeOfYellow() {
     int r = 255 + rand() % 64 - 32;
     int g = 255 + rand() % 64 - 32;
     int b = rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of red
-sf::Color getRandomShadeOfRed() {
+Color getRandomShadeOfRed() {
     int r = 255 + rand() % 64 - 32;
     int g = rand() % 64 - 32;
     int b = rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of green
-sf::Color getRandomShadeOfGreen() {
+Color getRandomShadeOfGreen() {
     int r = rand() % 64 - 32;
     int g = 255 + rand() % 64 - 32;
     int b = rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of blue
-sf::Color getRandomShadeOfBlue() {
+Color getRandomShadeOfBlue() {
     int r = rand() % 64 - 32;
     int g = rand() % 64 - 32;
     int b = 255 + rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of purple
-sf::Color getRandomShadeOfPurple() {
+Color getRandomShadeOfPurple() {
     int r = 255 + rand() % 64 - 32;
     int g = rand() % 64 - 32;
     int b = 255 + rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of cyan
-sf::Color getRandomShadeOfCyan() {
+Color getRandomShadeOfCyan() {
     int r = rand() % 64 - 32;
     int g = 255 + rand() % 64 - 32;
     int b = 255 + rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of orange
-sf::Color getRandomShadeOfOrange() {
+Color getRandomShadeOfOrange() {
     int r = 255 + rand() % 64 - 32;
     int g = 165 + rand() % 64 - 32;
     int b = rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of pink
-sf::Color getRandomShadeOfPink() {
+Color getRandomShadeOfPink() {
     int r = 255 + rand() % 64 - 32;
     int g = 192 + rand() % 64 - 32;
     int b = 203 + rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
 // Function to generate a random shade of gray
-sf::Color getRandomShadeOfGray() {
+Color getRandomShadeOfGray() {
     int gray = 128 + rand() % 64 - 32;
 
-    gray = std::clamp(gray, 0, 255);
+    gray = clamp(gray, 0, 255);
 
-    return sf::Color(gray, gray, gray);
+    return Color(gray, gray, gray);
 }
 
 // Function to generate a random shade of brown
-sf::Color getRandomShadeOfBrown() {
+Color getRandomShadeOfBrown() {
     int r = 139 + rand() % 64 - 32;
     int g = 69 + rand() % 64 - 32;
     int b = 19 + rand() % 64 - 32;
 
-    r = std::clamp(r, 0, 255);
-    g = std::clamp(g, 0, 255);
-    b = std::clamp(b, 0, 255);
+    r = clamp(r, 0, 255);
+    g = clamp(g, 0, 255);
+    b = clamp(b, 0, 255);
 
-    return sf::Color(r, g, b);
+    return Color(r, g, b);
 }
 
-#endif // COLORS_HPP
+#endif

@@ -19,4 +19,4 @@ private:
     sf::Vector2i lastMousePos;
 };
 
-#endif // CAMERA_HPP
+#endif

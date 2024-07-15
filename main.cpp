@@ -20,11 +20,11 @@ int main() {
     vector<Cube> cubes;
     vector<Color> colors;
 
-    // Create pyramid with lines
+    // SAMPLE: Pyramid with Lines
     float baseSize = 200.0f;
     float height = 300.0f;
     float cubeSize = 10.0f;
-    Vec3 pyramidOffset(0.0f, 0.0f, 0.0f); // Offset for positioning the pyramid
+    Vec3 pyramidOffset(0.0f, 0.0f, 0.0f);
 
     cubes = createPyramidWithLines(baseSize, height, cubeSize, pyramidOffset);
 
