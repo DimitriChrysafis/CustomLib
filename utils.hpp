@@ -7,4 +7,4 @@
 
 std::vector<Cube> drawLineOfCubes(const Vec3& start, const Vec3& end, float cubeSize);
 
-#endif 
+#endif
