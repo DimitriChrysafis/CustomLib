@@ -1,352 +1,382 @@
-float angleTorus = 0;
-float angleSphere = 0;
-float angleBox = 0;
-float angleCone = 0;
-float anglePyramid = 0;
-float angleCylinder = 0;
-float angleDodecahedron = 0;
-float angleIcosahedron = 0;
+float angleX = 0;
+float angleY = 0;
+float angleZ = 0;
+float zoom = 1;
+float rotationSpeed = 0.02;
 
 void setup() {
-  size(1200, 800, P3D);
-  noFill();
+  size(800, 600, P3D);
 }
 
 void draw() {
   background(0);
+  translate(width / 2, height / 2, -500);
+  scale(zoom);
+
+  rotateX(angleX);
+  rotateY(angleY);
+  rotateZ(angleZ);
+
+  drawBoxWireframe(100);
+  drawBoxSolid(100);
   
-  translate(width / 2, height / 2, -800);
-
-  directionalLight(255, 255, 255, -1, -1, -1);
-  ambientLight(100, 100, 100);
-
-  // Torus
   pushMatrix();
-  rotateX(angleTorus);
-  rotateY(angleTorus * 0.5);
-  stroke(255, 0, 0);
-  strokeWeight(1);
-  torusWireframe(150, 50);
+  translate(200, 0, 0);
+  drawConeWireframe(50, 100);
+  drawConeSolid(50, 100);
   popMatrix();
-
-  // Sphere
+  
   pushMatrix();
-  rotateX(angleSphere * 0.5);
-  rotateY(angleSphere);
-  translate(400, 0, 0);
-  stroke(0, 255, 0);
-  strokeWeight(1);
-  sphereWireframe(100);
+  translate(-200, 200, 0);
+  drawPyramidWireframe(100, 150);
+  drawPyramidSolid(100, 150);
   popMatrix();
-
-  // Box
+  
   pushMatrix();
-  rotateX(angleBox);
-  rotateY(angleBox * 0.5);
-  translate(-400, 0, 0);
+  translate(200, -200, 0);
+  drawCylinderWireframe(50, 150);
+  drawCylinderSolid(50, 150);
+  popMatrix();
+  
+  pushMatrix();
+  translate(0, 200, -200);
+  drawDodecahedronWireframe(100);
+  drawDodecahedronSolid(100);
+  popMatrix();
+  
+  pushMatrix();
+  translate(-200, -200, 200);
+  drawIcosahedronWireframe(100);
+  drawIcosahedronSolid(100);
+  popMatrix();
+  
+  angleX += rotationSpeed;
+  angleY += rotationSpeed;
+  angleZ += rotationSpeed;
+}
+
+void drawBoxWireframe(float s) {
+  float half = s / 2;
+  PVector[] vertices = {
+    new PVector(-half, -half, -half),
+    new PVector(half, -half, -half),
+    new PVector(half, half, -half),
+    new PVector(-half, half, -half),
+    new PVector(-half, -half, half),
+    new PVector(half, -half, half),
+    new PVector(half, half, half),
+    new PVector(-half, half, half)
+  };
+  
+  int[][] edges = {
+    {0, 1}, {1, 2}, {2, 3}, {3, 0},
+    {4, 5}, {5, 6}, {6, 7}, {7, 4},
+    {0, 4}, {1, 5}, {2, 6}, {3, 7}
+  };
+
   stroke(0, 0, 255);
-  strokeWeight(1);
-  boxWireframe(100);
-  popMatrix();
+  for (int[] edge : edges) {
+    PVector v1 = vertices[edge[0]];
+    PVector v2 = vertices[edge[1]];
+    line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
+  }
+}
 
-  // Cone
-  pushMatrix();
-  rotateX(angleCone);
-  rotateY(angleCone * 0.5);
-  translate(0, 400, 0);
+void drawBoxSolid(float s) {
+  float half = s / 2;
+  PVector[] vertices = {
+    new PVector(-half, -half, -half),
+    new PVector(half, -half, -half),
+    new PVector(half, half, -half),
+    new PVector(-half, half, -half),
+    new PVector(-half, -half, half),
+    new PVector(half, -half, half),
+    new PVector(half, half, half),
+    new PVector(-half, half, half)
+  };
+  
+  int[][] faces = {
+    {0, 1, 2, 3},
+    {4, 5, 6, 7},
+    {0, 1, 5, 4},
+    {1, 2, 6, 5},
+    {2, 3, 7, 6},
+    {3, 0, 4, 7}
+  };
+
+  fill(0, 0, 255, 100);
+  noStroke();
+  beginShape(QUADS);
+  for (int[] face : faces) {
+    for (int vertex : face) {
+      vertex(vertices[vertex].x, vertices[vertex].y, vertices[vertex].z);
+    }
+  }
+  endShape();
+}
+
+void drawConeWireframe(float r, float h) {
+  int numPoints = 36;
+  float angleStep = TWO_PI / numPoints;
+  
   stroke(255, 255, 0);
-  strokeWeight(1);
-  coneWireframe(80, 150);
-  popMatrix();
+  for (int i = 0; i < numPoints; i++) {
+    float angle0 = i * angleStep;
+    float angle1 = (i + 1) * angleStep;
 
-  // Pyramid
-  pushMatrix();
-  rotateX(anglePyramid);
-  rotateY(anglePyramid * 0.5);
-  translate(0, -400, 0);
+    PVector v0 = new PVector(r * cos(angle0), r * sin(angle0), 0);
+    PVector v1 = new PVector(r * cos(angle1), r * sin(angle1), 0);
+    
+    line(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z);
+    line(v0.x, v0.y, v0.z, 0, 0, h);
+    line(v1.x, v1.y, v1.z, 0, 0, h);
+  }
+}
+
+void drawConeSolid(float r, float h) {
+  int numPoints = 36;
+  float angleStep = TWO_PI / numPoints;
+
+  fill(255, 255, 0, 100);
+  noStroke();
+  beginShape(TRIANGLES);
+  for (int i = 0; i < numPoints; i++) {
+    float angle0 = i * angleStep;
+    float angle1 = (i + 1) * angleStep;
+
+    PVector v0 = new PVector(r * cos(angle0), r * sin(angle0), 0);
+    PVector v1 = new PVector(r * cos(angle1), r * sin(angle1), 0);
+    PVector top = new PVector(0, 0, h);
+
+    vertex(v0.x, v0.y, v0.z);
+    vertex(v1.x, v1.y, v1.z);
+    vertex(top.x, top.y, top.z);
+  }
+  endShape();
+}
+
+void drawPyramidWireframe(float s, float h) {
+  float half = s / 2;
+  PVector[] vertices = {
+    new PVector(-half, -half, 0),
+    new PVector(half, -half, 0),
+    new PVector(half, half, 0),
+    new PVector(-half, half, 0),
+    new PVector(0, 0, h)
+  };
+  
+  int[][] edges = {
+    {0, 1}, {1, 2}, {2, 3}, {3, 0},
+    {0, 4}, {1, 4}, {2, 4}, {3, 4}
+  };
+
+  stroke(255, 165, 0);
+  for (int[] edge : edges) {
+    PVector v1 = vertices[edge[0]];
+    PVector v2 = vertices[edge[1]];
+    line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
+  }
+}
+
+void drawPyramidSolid(float s, float h) {
+  float half = s / 2;
+  PVector[] vertices = {
+    new PVector(-half, -half, 0),
+    new PVector(half, -half, 0),
+    new PVector(half, half, 0),
+    new PVector(-half, half, 0),
+    new PVector(0, 0, h)
+  };
+  
+  int[][] faces = {
+    {0, 1, 4},
+    {1, 2, 4},
+    {2, 3, 4},
+    {3, 0, 4},
+    {0, 1, 2, 3}
+  };
+
+  fill(255, 165, 0, 100);
+  noStroke();
+  beginShape(TRIANGLES);
+  for (int[] face : faces) {
+    for (int vertex : face) {
+      vertex(vertices[vertex].x, vertices[vertex].y, vertices[vertex].z);
+    }
+  }
+  endShape();
+}
+
+void drawCylinderWireframe(float r, float h) {
+  int numPoints = 36;
+  float angleStep = TWO_PI / numPoints;
+
   stroke(255, 0, 255);
-  strokeWeight(1);
-  pyramidWireframe(80, 100);
-  popMatrix();
-
-  // Cylinder
-  pushMatrix();
-  rotateX(angleCylinder);
-  rotateY(angleCylinder * 0.5);
-  translate(600, 0, 0);
-  stroke(0, 255, 255);
-  strokeWeight(1);
-  cylinderWireframe(50, 150);
-  popMatrix();
-
-  // Dodecahedron
-  pushMatrix();
-  rotateX(angleDodecahedron);
-  rotateY(angleDodecahedron * 0.5);
-  translate(-600, 0, 0);
-  stroke(255, 165, 0);
-  strokeWeight(1);
-  dodecahedronWireframe(100);
-  popMatrix();
-
-  // Icosahedron
-  pushMatrix();
-  rotateX(angleIcosahedron);
-  rotateY(angleIcosahedron * 0.5);
-  translate(0, 0, 600);
-  stroke(128, 0, 128);
-  strokeWeight(1);
-  icosahedronWireframe(100);
-  popMatrix();
-
-  angleTorus += 0.01;
-  angleSphere += 0.015;
-  angleBox += 0.02;
-  angleCone += 0.025;
-  anglePyramid += 0.03;
-  angleCylinder += 0.035;
-  angleDodecahedron += 0.04;
-  angleIcosahedron += 0.045;
-}
-
-void torusWireframe(float r, float t) {
-  int numTheta = 36;
-  int numPhi = 36;
-  float thetaSpacing = TWO_PI / numTheta;
-  float phiSpacing = TWO_PI / numPhi;
-
-  for (int i = 0; i < numTheta; i++) {
-    float theta0 = i * thetaSpacing;
-    float theta1 = (i + 1) * thetaSpacing;
-
-    for (int j = 0; j < numPhi; j++) {
-      float phi0 = j * phiSpacing;
-      float phi1 = (j + 1) * phiSpacing;
-
-      PVector v00 = torusVertex(r, t, theta0, phi0);
-      PVector v01 = torusVertex(r, t, theta0, phi1);
-      PVector v10 = torusVertex(r, t, theta1, phi0);
-      PVector v11 = torusVertex(r, t, theta1, phi1);
-
-      line(v00.x, v00.y, v00.z, v01.x, v01.y, v01.z);
-      line(v01.x, v01.y, v01.z, v11.x, v11.y, v11.z);
-      line(v11.x, v11.y, v11.z, v10.x, v10.y, v10.z);
-      line(v10.x, v10.y, v10.z, v00.x, v00.y, v00.z);
-    }
-  }
-}
-
-void sphereWireframe(float r) {
-  int numLat = 18;
-  int numLon = 36;
-  
-  for (int i = 0; i < numLat; i++) {
-    float lat0 = PI * (-0.5 + (float) (i) / numLat);
-    float lat1 = PI * (-0.5 + (float) (i + 1) / numLat);
-
-    for (int j = 0; j < numLon; j++) {
-      float lon0 = TWO_PI * (float) (j) / numLon;
-      float lon1 = TWO_PI * (float) (j + 1) / numLon;
-
-      PVector v00 = sphereVertex(r, lat0, lon0);
-      PVector v01 = sphereVertex(r, lat0, lon1);
-      PVector v10 = sphereVertex(r, lat1, lon0);
-      PVector v11 = sphereVertex(r, lat1, lon1);
-
-      line(v00.x, v00.y, v00.z, v01.x, v01.y, v01.z);
-      line(v01.x, v01.y, v01.z, v11.x, v11.y, v11.z);
-      line(v11.x, v11.y, v11.z, v10.x, v10.y, v10.z);
-      line(v10.x, v10.y, v10.z, v00.x, v00.y, v00.z);
-    }
-  }
-}
-
-void boxWireframe(float s) {
-  float half = s / 2;
-  beginShape(LINES);
-  vertex(-half, -half, -half);
-  vertex(half, -half, -half);
-  
-  vertex(half, -half, -half);
-  vertex(half, half, -half);
-  
-  vertex(half, half, -half);
-  vertex(-half, half, -half);
-  
-  vertex(-half, half, -half);
-  vertex(-half, -half, -half);
-  
-  vertex(-half, -half, half);
-  vertex(half, -half, half);
-  
-  vertex(half, -half, half);
-  vertex(half, half, half);
-  
-  vertex(half, half, half);
-  vertex(-half, half, half);
-  
-  vertex(-half, half, half);
-  vertex(-half, -half, half);
-  
-  vertex(-half, -half, -half);
-  vertex(-half, -half, half);
-  
-  vertex(half, -half, -half);
-  vertex(half, -half, half);
-  
-  vertex(half, half, -half);
-  vertex(half, half, half);
-  
-  vertex(-half, half, -half);
-  vertex(-half, half, half);
-  endShape();
-}
-
-void coneWireframe(float r, float h) {
-  int num = 36;
-  float angleStep = TWO_PI / num;
-  
-  for (int i = 0; i < num; i++) {
+  for (int i = 0; i < numPoints; i++) {
     float angle0 = i * angleStep;
     float angle1 = (i + 1) * angleStep;
-    
-    float x0 = r * cos(angle0);
-    float y0 = r * sin(angle0);
-    float x1 = r * cos(angle1);
-    float y1 = r * sin(angle1);
 
-    line(x0, y0, 0, x1, y1, 0);
-    line(0, 0, 0, x0, y0, h);
-    line(0, 0, 0, x1, y1, h);
+    PVector v0 = new PVector(r * cos(angle0), r * sin(angle0), 0);
+    PVector v1 = new PVector(r * cos(angle1), r * sin(angle1), 0);
+    PVector v2 = new PVector(r * cos(angle0), r * sin(angle0), h);
+    PVector v3 = new PVector(r * cos(angle1), r * sin(angle1), h);
+
+    line(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z);
+    line(v2.x, v2.y, v2.z, v3.x, v3.y, v3.z);
+    line(v0.x, v0.y, v0.z, v2.x, v2.y, v2.z);
+    line(v1.x, v1.y, v1.z, v3.x, v3.y, v3.z);
   }
 }
 
-void pyramidWireframe(float s, float h) {
-  float half = s / 2;
+void drawCylinderSolid(float r, float h) {
+  int numPoints = 36;
+  float angleStep = TWO_PI / numPoints;
+
+  fill(255, 0, 255, 100);
+  noStroke();
+  beginShape(TRIANGLE_STRIP);
+  for (int i = 0; i <= numPoints; i++) {
+    float angle = i * angleStep;
+    PVector v0 = new PVector(r * cos(angle), r * sin(angle), 0);
+    PVector v1 = new PVector(r * cos(angle), r * sin(angle), h);
+
+    vertex(v0.x, v0.y, v0.z);
+    vertex(v1.x, v1.y, v1.z);
+  }
+  endShape();
   
-  beginShape(LINES);
-  vertex(-half, -half, -half);
-  vertex(half, -half, -half);
+  fill(255, 0, 255, 100);
+  beginShape(TRIANGLE_FAN);
+  PVector topCenter = new PVector(0, 0, h);
+  for (int i = 0; i <= numPoints; i++) {
+    float angle = i * angleStep;
+    PVector v0 = new PVector(r * cos(angle), r * sin(angle), h);
+
+    vertex(topCenter.x, topCenter.y, topCenter.z);
+    vertex(v0.x, v0.y, v0.z);
+  }
+  endShape();
   
-  vertex(half, -half, -half);
-  vertex(half, half, -half);
-  
-  vertex(half, half, -half);
-  vertex(-half, half, -half);
-  
-  vertex(-half, half, -half);
-  vertex(-half, -half, -half);
-  
-  vertex(-half, -half, -half);
-  vertex(0, 0, h);
-  
-  vertex(half, -half, -half);
-  vertex(0, 0, h);
-  
-  vertex(half, half, -half);
-  vertex(0, 0, h);
-  
-  vertex(-half, half, -half);
-  vertex(0, 0, h);
-  
+  beginShape(TRIANGLE_FAN);
+  PVector bottomCenter = new PVector(0, 0, 0);
+  for (int i = 0; i <= numPoints; i++) {
+    float angle = i * angleStep;
+    PVector v0 = new PVector(r * cos(angle), r * sin(angle), 0);
+
+    vertex(bottomCenter.x, bottomCenter.y, bottomCenter.z);
+    vertex(v0.x, v0.y, v0.z);
+  }
   endShape();
 }
 
-void cylinderWireframe(float r, float h) {
-  int num = 36;
-  float angleStep = TWO_PI / num;
-  
-  for (int i = 0; i < num; i++) {
-    float angle0 = i * angleStep;
-    float angle1 = (i + 1) * angleStep;
-    
-    float x0 = r * cos(angle0);
-    float y0 = r * sin(angle0);
-    float x1 = r * cos(angle1);
-    float y1 = r * sin(angle1);
-
-    line(x0, y0, -h / 2, x1, y1, -h / 2);
-    line(x0, y0, h / 2, x1, y1, h / 2);
-    line(x0, y0, -h / 2, x0, y0, h / 2);
-    line(x1, y1, -h / 2, x1, y1, h / 2);
-  }
-}
-
-void dodecahedronWireframe(float s) {
+void drawDodecahedronWireframe(float s) {
   float t = (1.0 + sqrt(5.0)) / 2.0 * s / 2.0;
-  float[][] vertices = {
-    {0, s, t},
-    {0, s, -t},
-    {0, -s, t},
-    {0, -s, -t},
-    {s, t, 0},
-    {s, -t, 0},
-    {-s, t, 0},
-    {-s, -t, 0},
-    {t, 0, s},
-    {t, 0, -s},
-    {-t, 0, s},
-    {-t, 0, -s}
+  PVector[] vertices = {
+    new PVector(0, s, t), new PVector(0, s, -t), new PVector(0, -s, t), new PVector(0, -s, -t),
+    new PVector(s, t, 0), new PVector(s, -t, 0), new PVector(-s, t, 0), new PVector(-s, -t, 0),
+    new PVector(t, 0, s), new PVector(-t, 0, s), new PVector(t, 0, -s), new PVector(-t, 0, -s)
   };
+  
   int[][] edges = {
-    {0, 4}, {4, 8}, {8, 0}, {0, 5}, {5, 9},
-    {9, 0}, {1, 6}, {6, 10}, {10, 1}, {1, 7},
-    {7, 11}, {11, 1}, {2, 4}, {4, 10}, {10, 2},
-    {2, 6}, {6, 8}, {8, 2}, {3, 5}, {5, 9},
-    {9, 3}, {3, 7}, {7, 11}, {11, 3}, {2, 7},
-    {7, 4}, {4, 2}
+    {0, 4}, {4, 1}, {1, 5}, {5, 0},
+    {2, 6}, {6, 3}, {3, 7}, {7, 2},
+    {0, 2}, {4, 6}, {1, 3}, {5, 7},
+    {8, 0}, {0, 10}, {10, 9}, {9, 8},
+    {11, 2}, {2, 10}, {10, 11}, {11, 9},
+    {8, 11}, {11, 9}, {9, 10}, {10, 8}
   };
 
-  stroke(255, 165, 0);
-  strokeWeight(1);
-  beginShape(LINES);
-  for (int i = 0; i < edges.length; i++) {
-    int[] edge = edges[i];
-    float[] v1 = vertices[edge[0]];
-    float[] v2 = vertices[edge[1]];
-    line(v1[0], v1[1], v1[2], v2[0], v2[1], v2[2]);
+  stroke(255, 105, 180);
+  for (int[] edge : edges) {
+    PVector v1 = vertices[edge[0]];
+    PVector v2 = vertices[edge[1]];
+    line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
   }
-  endShape();
 }
 
-void icosahedronWireframe(float s) {
+void drawDodecahedronSolid(float s) {
   float t = (1.0 + sqrt(5.0)) / 2.0 * s / 2.0;
-  float[][] vertices = {
-    {0, s, t}, {0, s, -t}, {0, -s, t}, {0, -s, -t},
-    {s, t, 0}, {s, -t, 0}, {-s, t, 0}, {-s, -t, 0},
-    {t, 0, s}, {t, 0, -s}, {-t, 0, s}, {-t, 0, -s}
+  PVector[] vertices = {
+    new PVector(0, s, t), new PVector(0, s, -t), new PVector(0, -s, t), new PVector(0, -s, -t),
+    new PVector(s, t, 0), new PVector(s, -t, 0), new PVector(-s, t, 0), new PVector(-s, -t, 0),
+    new PVector(t, 0, s), new PVector(-t, 0, s), new PVector(t, 0, -s), new PVector(-t, 0, -s)
   };
-  int[][] edges = {
-    {0, 4}, {4, 8}, {8, 0}, {0, 5}, {5, 9},
-    {9, 0}, {1, 6}, {6, 10}, {10, 1}, {1, 7},
-    {7, 11}, {11, 1}, {2, 4}, {4, 10}, {10, 2},
-    {2, 6}, {6, 8}, {8, 2}, {3, 5}, {5, 9},
-    {9, 3}, {3, 7}, {7, 11}, {11, 3}, {2, 7},
-    {7, 4}, {4, 2}
+  
+  int[][] faces = {
+    {0, 4, 1, 5}, {2, 6, 3, 7}, {8, 0, 10, 9},
+    {11, 2, 10, 9}, {8, 11, 9, 10}
   };
 
-  stroke(128, 0, 128);
-  strokeWeight(1);
-  beginShape(LINES);
-  for (int i = 0; i < edges.length; i++) {
-    int[] edge = edges[i];
-    float[] v1 = vertices[edge[0]];
-    float[] v2 = vertices[edge[1]];
-    line(v1[0], v1[1], v1[2], v2[0], v2[1], v2[2]);
+  fill(255, 105, 180, 100);
+  noStroke();
+  beginShape(TRIANGLES);
+  for (int[] face : faces) {
+    for (int vertex : face) {
+      vertex(vertices[vertex].x, vertices[vertex].y, vertices[vertex].z);
+    }
   }
   endShape();
 }
 
-PVector torusVertex(float r, float t, float theta, float phi) {
-  float x = (r + t * cos(theta)) * cos(phi);
-  float y = (r + t * cos(theta)) * sin(phi);
-  float z = t * sin(theta);
-  return new PVector(x, y, z);
+void drawIcosahedronWireframe(float s) {
+  float t = s * 0.5;
+  PVector[] vertices = {
+    new PVector(0, t, s), new PVector(0, -t, s), new PVector(0, -t, -s),
+    new PVector(0, t, -s), new PVector(t, 0, s), new PVector(-t, 0, s),
+    new PVector(-t, 0, -s), new PVector(t, 0, -s), new PVector(s, -s, 0),
+    new PVector(s, s, 0), new PVector(-s, -s, 0), new PVector(-s, s, 0)
+  };
+  
+  int[][] edges = {
+    {0, 4}, {4, 1}, {1, 5}, {5, 0},
+    {2, 6}, {6, 3}, {3, 7}, {7, 2},
+    {8, 0}, {0, 10}, {10, 9}, {9, 8},
+    {11, 2}, {2, 10}, {10, 11}, {11, 9},
+    {8, 11}, {11, 9}, {9, 10}, {10, 8}
+  };
+
+  stroke(255, 20, 147);
+  for (int[] edge : edges) {
+    PVector v1 = vertices[edge[0]];
+    PVector v2 = vertices[edge[1]];
+    line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
+  }
 }
 
-PVector sphereVertex(float r, float lat, float lon) {
-  float x = r * cos(lat) * cos(lon);
-  float y = r * cos(lat) * sin(lon);
-  float z = r * sin(lat);
-  return new PVector(x, y, z);
+void drawIcosahedronSolid(float s) {
+  float t = s * 0.5;
+  PVector[] vertices = {
+    new PVector(0, t, s), new PVector(0, -t, s), new PVector(0, -t, -s),
+    new PVector(0, t, -s), new PVector(t, 0, s), new PVector(-t, 0, s),
+    new PVector(-t, 0, -s), new PVector(t, 0, -s), new PVector(s, -s, 0),
+    new PVector(s, s, 0), new PVector(-s, -s, 0), new PVector(-s, s, 0)
+  };
+
+  int[][] faces = {
+    {0, 4, 1, 5}, {2, 6, 3, 7}, {8, 0, 10, 9},
+    {11, 2, 10, 9}, {8, 11, 9, 10}
+  };
+
+  fill(255, 20, 147, 100);
+  noStroke();
+  beginShape(TRIANGLES);
+  for (int[] face : faces) {
+    for (int vertex : face) {
+      vertex(vertices[vertex].x, vertices[vertex].y, vertices[vertex].z);
+    }
+  }
+  endShape();
+}
+
+void mouseDragged() {
+  float dx = (mouseX - pmouseX) * 0.01;
+  float dy = (mouseY - pmouseY) * 0.01;
+  angleX += dy;
+  angleY += dx;
+}
+
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  zoom += e * 0.1;
+  zoom = constrain(zoom, 0.1, 5);
 }
