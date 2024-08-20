@@ -2,6 +2,9 @@
 Make any shape out of cubes by expressing it in shapes.hpp in 3d
 Below is a gif with samples that I made (WATCH YOUTUBE VIDEOS)
 
+
+im gonna add docs later cuz on plane will be bored
+
 Features
 - linear algebra for 3d view to drag/zoom
 - you can connect 2 points in space with cubes
